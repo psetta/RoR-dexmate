@@ -1,0 +1,59 @@
+.ct-legend {
+	position: absolute;
+	top: -12px;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	text-align: center;
+}
+
+.ct-legend li {
+	display: inline-block;
+	margin-right: 10px;
+	position: relative;
+	padding-left: 23px;
+}
+
+.ct-legend li:before {
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        left: 0;
+        content: '';
+        border: 3px solid transparent;
+        border-radius: 2px;
+		left: 4px;
+		top: 4px;
+}
+
+.ct-legend li.ct-series-0:before {
+	background-color: #5b69bc;
+	border-color: #5b69bc;
+}
+
+.ct-legend li.ct-series-1:before {
+	background-color: #ff8acc;
+	border-color: #ff8acc;
+}
+
+.ct-legend li.ct-series-2:before {
+	background-color: #f9c851;
+	border-color: #f9c851;
+}
+
+.ct-legend li.ct-series-3:before {
+	background-color: #35b8e0;
+	border-color: #35b8e0;
+}
+
+.ct-legend li.ct-series-4:before {
+	background-color: #435966;
+	border-color: #435966;
+}
+
+.ct-legend li.ct-series-5:before {
+	background-color: #188ae2;
+	border-color: #188ae2;
+}

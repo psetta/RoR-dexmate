@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Personal administration for human beings.">
+		<!-- App Favicon -->
+		<link rel="shortcut icon" href="app/assets/images/favicon.ico">
+		<!-- App title -->
+		<title>Dexmate</title>
+		<!-- App CSS -->
+		<link href="app/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/core.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/components.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/icons.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/pages.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/menu.css" rel="stylesheet" type="text/css" />
+		<link href="app/assets/css/responsive.css" rel="stylesheet" type="text/css" />
+		<script src="app/assets/javascripts/modernizr.min.js"></script>
+	</head>
+	<body>
+		<%= yield %>
+		<script>
+			var resizefunc = [];
+		</script>
+		<!-- jQuery  -->
+		<script src="app/assets/javascripts/jquery.min.js"></script>
+		<script src="app/assets/javascripts/bootstrap.min.js"></script>
+		<script src="app/assets/javascripts/detect.js"></script>
+		<script src="app/assets/javascripts/fastclick.js"></script>
+		<script src="app/assets/javascripts/jquery.slimscroll.js"></script>
+		<script src="app/assets/javascripts/jquery.blockUI.js"></script>
+		<script src="app/assets/javascripts/waves.js"></script>
+		<script src="app/assets/javascripts/wow.min.js"></script>
+		<script src="app/assets/javascripts/jquery.nicescroll.js"></script>
+		<script src="app/assets/javascripts/jquery.scrollTo.min.js"></script>
+		<!-- App js -->
+		<script src="app/assets/javascripts/jquery.core.js"></script>
+		<script src="app/assets/javascripts/jquery.app.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+			
+				$("#login").validate({
+				   rules: {
+					 // no quoting necessary
+					 'session[user]': "required",
+					 'session[password]': "required"				
+				   },messages: {
+					 user: "You must enter a valid user.",
+					 password: "You must enter a valid password."
+				   }
+				 });
+				 
+			})
+		</script>
+	</body>
+</html>

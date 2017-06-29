@@ -1,0 +1,544 @@
+<div class="content-page">
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-3 leftmenu" style="display:none;">
+					<!-- new widget -->
+					<div class="jarviswidget jarviswidget-color-blueDark">
+						<!-- widget div-->
+						<div>
+							<div class="widget-body">
+								<!-- content goes here -->
+								<form id="add-event-form" method="POST" enctype="multipart/form-data" action="/calCreate" autocomplete="off">
+									<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+									<fieldset>
+										<div class="form-group">
+											<label>Event Title</label>
+											<div class="col-lg-12">
+												<input class="form-control"  id="title" name="title" maxlength="40" type="text" placeholder="Event Title">
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Event type</label>
+											<div class="col-lg-12">
+												<input class="form-control"  id="type" name="type" maxlength="40" type="text" placeholder="Event type">
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Event Description</label>
+											<div class="col-lg-12">
+												<textarea class="form-control" name="text" placeholder="Event Description" rows="3" maxlength="1000" id="description"></textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Web</label>
+											<div class="col-lg-12">
+												<input class="form-control"  id="web" name="web" maxlength="40" type="text" placeholder="Web url">
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Date Range:</label>
+											<div class="col-lg-12">
+												<input type="text" class="form-control input-daterange-timepicker" readonly value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" name="daterange" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Event Color</label>
+											<div class="col-lg-12">
+												<select class="form-control select2" name="color">
+													<optgroup label="Choose your color">
+														<option value="bg-color-blue">Blue</option>
+														<option value="bg-color-blueLight">Light Blue</option>
+														<option value="bg-color-blueDark">Dark Blue</option>
+														<option value="bg-color-green">Green</option>
+														<option value="bg-color-greenLight">Light Green</option>
+														<option value="bg-color-greenDark">Dark Green</option>
+														<option value="bg-color-red">Red</option>
+														<option value="bg-color-yellow">Yellow</option>
+														<option value="bg-color-darken">Darken</option>
+														<option value="bg-color-lighten">Lighten</option>
+														<option value="bg-color-grayDark">Dark Grey</option>
+													</optgroup>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-lg-12">
+												<div class="checkbox checkbox-primary">
+													<input id="rep" name="rep" type="checkbox" value="1">
+													<label for="checkbox2">anual rep?</label>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="card-box">
+													<input type="file" class="dropify" name="photo" data-height="300" />
+												</div>
+											</div>
+											<!-- end col -->
+										</div>
+										<!-- end row -->
+									</fieldset>
+									<div class="form-actions">
+										<div class="row">
+											<div class="col-md-12">
+												<button class="btn btn-default" type="submit" id="add-event" >
+												Add Event
+												</button>
+											</div>
+										</div>
+									</div>
+								</form>
+								<!-- end content -->
+							</div>
+						</div>
+						<!-- end widget div -->
+					</div>
+					<!-- end widget -->
+				</div>
+				<div class="col-sm-12 col-md-12 col-lg-12 rightcontent">
+					<!-- new widget -->
+					<div class="jarviswidget jarviswidget-color-blueDark">
+
+						<div>
+							<div class="widget-body no-padding">
+								<!-- content goes here -->
+								<div class="widget-body-toolbar">
+									<div id="calendar-buttons">
+										<div class="btn-group">
+											<button class="btn dropdown-toggle btn-xs btn-default" id="toggleForm">
+											Add Event 
+											</button>
+											<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+											Showing <i class="fa fa-caret-down"></i>
+											</button>
+											<ul class="dropdown-menu js-status-update pull-right">
+												<li>
+													<a href="javascript:void(0);" id="mt">Month</a>
+												</li>
+												<li>
+													<a href="javascript:void(0);" id="ag">Agenda</a>
+												</li>
+												<li>
+													<a href="javascript:void(0);" id="td">Today</a>
+												</li>
+											</ul>
+										</div>
+										<div class="btn-group">
+											<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
+											<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
+										</div>
+									</div>
+								</div>
+								<div id="calendar"></div>
+								<!-- end content -->
+							</div>
+						</div>
+						<!-- end widget div -->
+					</div>
+					<!-- end widget -->
+				</div>
+			</div>
+			<!-- end row -->
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+	function editEventCalendar(){
+				
+		$('.sweet-alert input, .sweet-alert textarea').removeAttr('readonly');
+		$('.sweet-alert .delete-event').hide();
+				
+		if($('.sweet-alert .repeat-event').attr('data-value') > 0){
+		
+			$('.sweet-alert .repeat-event').addClass('btn-success');
+		
+		}
+				
+		$('.sweet-alert .repeat-event').click(function(evt){
+			
+			evt.preventDefault();
+			
+			if($('.sweet-alert .repeat-event').attr('data-value') > 0){
+		
+				$('.sweet-alert .repeat-event').removeClass('btn-success');
+				$('.sweet-alert .repeat-event').attr('data-value','0');
+				$('.sweet-alert .input-repeat').val('0');
+				
+			}else{
+
+				$('.sweet-alert .repeat-event').addClass('btn-success');
+				$('.sweet-alert .repeat-event').attr('data-value','1');
+				$('.sweet-alert .input-repeat').val('1');
+			
+			}
+		
+		}); 
+		
+		$('.sweet-alert .repeat-event').show();
+		
+		$("#event-form").validate({
+		   rules: {
+			title: "required",
+			typy: "required",
+			daterange: "required",
+			text: "required",
+			color: "required",
+			web: {
+			required: false,
+			url: true
+			}
+		   }
+		 });	
+		
+		$('.sweet-alert .edit-event').removeAttr('onclick').html('Save').click(function(){ 
+		
+			$('#event-form').submit();
+		
+		} );
+	
+	}
+
+	function deleteEventCalendar(){
+	
+		$.post('/deleteEvent',{'id':$('.sweet-alert .idcalendar').val(),'authenticity_token':$('.sweet-alert .authenticity_token').val()},function(){
+				
+			location.reload();
+		
+		});
+	
+	}
+	
+	$(document).ready(function() {
+				
+			// EVENT FORM TOGGLE
+			$('#toggleForm').click(function(){
+			
+				if($('.leftmenu').is(":visible")){
+														
+					 $('.leftmenu').hide();
+					 
+					 $('.rightcontent').removeClass('col-lg-9').addClass('col-lg-12');
+				
+				}else{
+				
+					$('.leftmenu').show();
+					 
+					$('.rightcontent').removeClass('col-lg-12').addClass('col-lg-9');
+				
+				}
+			
+			});
+							
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+	
+			var yyyy = today.getFullYear();
+			if(dd<10){
+				dd='0'+dd;
+			} 
+			if(mm<10){
+				mm='0'+mm;
+			} 
+			var today = dd+'/'+mm+'/'+yyyy;
+			
+					//Datepìcker
+			            $('.input-daterange-timepicker').daterangepicker({
+	                timePicker: true,
+					startDate: today,
+					endDate: today,
+					locale: {
+						format: 'DD/MM/YYYY H:mm'
+					},
+	                timePickerIncrement: 15,
+	                timePicker24Hour: true,
+	                timePickerSeconds: false,
+	                buttonClasses: ['btn', 'btn-sm'],
+	                applyClass: 'btn-default',
+	                cancelClass: 'btn-primary'
+					});
+			
+				//pageSetUp();
+				
+				    "use strict";
+				
+				    var date = new Date();
+				    var d = date.getDate();
+				    var m = date.getMonth();
+				    var y = date.getFullYear();
+				
+				    var hdr = {
+				        left: 'title',
+				        center: 'month,agendaWeek,agendaDay',
+				        right: 'prev,today,next'
+				    };
+				
+				    /* initialize the calendar
+					 -----------------------------------------------------------------*/
+				
+				    $('#calendar').fullCalendar({
+				
+				        header: hdr,
+				        editable: false,
+				        droppable: false, // this allows things to be dropped onto the calendar !!!
+				
+				        drop: function (date, allDay) { // this function is called when something is dropped
+				
+				            // retrieve the dropped element's stored Event Object
+				            var originalEventObject = $(this).data('eventObject');
+				
+				            // we need to copy it, so that multiple events don't have a reference to the same object
+				            var copiedEventObject = $.extend({}, originalEventObject);
+				
+				            // assign it the date that was reported
+				            copiedEventObject.start = date;
+				            copiedEventObject.allDay = allDay;
+				
+				            // render the event on the calendar
+				            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+				            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+								
+				            // is the "remove after drop" checkbox checked?
+				            if ($('#drop-remove').is(':checked')) {
+				                // if so, remove the element from the "Draggable Events" list
+				                $(this).remove();
+				            }
+				
+				        },
+				
+				        select: function (start, end, allDay) {
+				            var title = prompt('Event Title:');
+				            if (title) {
+				                calendar.fullCalendar('renderEvent', {
+				                        title: title,
+				                        start: start,
+				                        end: end,
+				                        allDay: allDay
+				                    }, true // make the event "stick"
+				                );
+				            }
+				            calendar.fullCalendar('unselect');
+				        },
+				
+				        events: [
+						<% @eventsOnCalendar.each do |event| %>
+						
+						{
+				            title: '<%= event.name %> - <%= event.category %>',
+	
+				            start: new Date(<%= event.startYear %>, <%= event.startMonth %> - 1, <%= event.startDay %> , <%= event.startHour %>, <%= event.startMin %>),
+							end: new Date(<%= event.endYear %>, <%= event.endMonth %> - 1, <%= event.endDay %>, <%= event.endHour %>, <%= event.endMin %>),
+							allDay: false,
+				            //description: '<div class="eventdata" style="display:none;"><h1><%= event.name %><br /><br /></h1>Category: <%= event.category %> <br /> web: <%= event.web %> <br /> text: <%= event.text%>          <form action="/deleteEvent" method="POST"><input type="hidden" name="event" value="<%= event.idcalendar %>"><input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"><button type="submit"><i class="fa fa-trash-o"></i></button></form> ></div>',
+				            description: '<div style="display:none"><div class="event-idcalendar"><%= event.idcalendar %></div><div class="event-edate"><%= event.date %></div><div class="event-anualRep"><%= event.anualRep %></div><div class="event-category"><%= event.category %></div><div class="event-edateF"><%= event.dateF %></div><div class="event-name"><%= event.name %></div><div class="event-web"><%= event.web %></div><div class="event-text"><%= event.text %></div><div class="event-color"><%= event.color %></div><div class="event-photo"><%= event.photo %></div></div>',
+							className: ["event", "<%= event.color %>"],
+				        },
+	
+						<% end %>
+						],
+				
+				        eventRender: function (event, element, icon) {
+							
+							element.click(function(){
+								
+								var idcalendar = $(this).find('.event-idcalendar').html();
+								
+								var edate = $(this).find('.event-edate').html().replace(' UTC', '');
+								var anualRep = $(this).find('.event-anualRep').html();
+								var category = $(this).find('.event-category').html();
+								var edateF = $(this).find('.event-edateF').html().replace(' UTC', '');
+								var name = $(this).find('.event-name').html();
+								var web = $(this).find('.event-web').html();
+								var text = $(this).find('.event-text').html();
+								//
+								var ecolor = $(this).find('.event-color').html();
+								//
+								var photo = $(this).find('.event-photo').html();
+								
+								/*
+								var dialogwindow = $(this).find('.eventdata').dialog({
+									modal: true,
+									autoOpen: false,
+									close: function() {
+										$(this).dialog('destroy');
+									}
+								});
+							
+								dialogwindow.dialog("open");
+								*/
+								
+								$('.sweet-alert .added').remove();
+								
+								$('.sweet-alert').prepend('<div class="added '+ecolor+'"></div>').append(`
+								
+									<div class="added">
+										<form id="event-form" action="/editEvent" method="POST" autocomplete="off">
+											<input type="hidden" class="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>">
+											
+											<div name="leftColumn" class="col-lg-6">
+												<div class="form-group">
+													<div class="col-lg-12">
+														<input class="form-control input-lg"  id="title" name="title" value="`+ name +`" maxlength="40" type="text" placeholder="Event Title" readonly>
+													</div>
+												</div>	
+
+												<div class="form-group">
+													<div class="col-lg-12">
+														<input class="form-control"  id="type" name="category" value="`+category+`" maxlength="40" type="text" placeholder="Event Category" readonly>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label></label>
+													<div class="col-lg-12 input-group m-t-10">
+														<input class="form-control"  id="type" name="web" maxlength="40" value="`+web+`" type="text" placeholder="Web event" readonly>
+														<span class="input-group-btn">
+                                                        <a type="button" href="`+web+`" target="_blank" class="btn waves-effect waves-light btn-primary"><i class="fa fa-mail-forward"></i></a>
+                                                        </span>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label>Description:</label>
+													<div class="col-lg-12">
+														<textarea class="form-control"  id="type" name="text" placeholder="Event description" readonly>`+text+`</textarea>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label>Color</label>
+													<div class="col-lg-12">
+														<select class="form-control select2" name="color" readonly>
+															<optgroup label="Choose your color">
+																<option value="bg-color-blue">Blue</option>
+																<option value="bg-color-blueLight">Light Blue</option>
+																<option value="bg-color-blueDark">Dark Blue</option>
+																<option value="bg-color-green">Green</option>
+																<option value="bg-color-greenLight">Light Green</option>
+																<option value="bg-color-greenDark">Dark Green</option>
+																<option value="bg-color-red">Red</option>
+																<option value="bg-color-yellow">Yellow</option>
+																<option value="bg-color-darken">Darken</option>
+																<option value="bg-color-lighten">Lighten</option>
+																<option value="bg-color-grayDark">Dark Grey</option>
+															</optgroup>
+														</select>
+													</div>
+												</div>
+											</div>
+										
+										<div name="leftColumn" class="col-lg-6">
+											<div class="form-group">
+												<div class="col-lg-12">
+													<input type="text" class="form-control" value="`+edate+` - `+edateF+`" data-mask="9999-99-99 99:99:99 - 9999-99-99 99:99:99" name="daterange"  readonly />
+												
+												</div>
+											</div>
+
+										<input type="hidden" name="idcalendar" class="idcalendar" value="`+idcalendar+`" />	
+										<input type="hidden" name="rep" class="input-repeat" value="`+anualRep+`" />
+										
+						</form>	
+											<div class="form-group">
+												<div class="col-lg-12">
+													<img src="`+photo+`" alt="Event Photo"> 
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-sm-12">
+											<p>
+												<div class="btn btn-lg btn-primary edit-event" onclick="editEventCalendar();">Edit</div>
+												<div class="btn btn-lg btn-danger pull-right delete-event" onclick="deleteEventCalendar();">Delete</div>
+												<div class="btn btn-lg pull-right repeat-event" onclick="repeatEventCalendar();" style="display:none;" data-value="`+anualRep+`">Repeat</div>
+											</p>
+										</div>
+									</div>
+									
+								`);
+								
+								swal({
+
+									title: "",
+									allowOutsideClick: true,
+									showConfirmButton: false
+
+									//confirmButtonClass: 'btn-default waves-effect waves-light edit-data'
+									//<button class="btn btn-lg btn-primary" tabindex="1" style="display: inline-block;">OK</button>
+									
+								});
+								
+								$('')
+								
+							});
+						
+				            if (!event.description == "") {
+				                element.find('.fc-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+				            }
+				            if (!event.icon == "") {
+				                element.find('.fc-title').append("<i class='air air-top-right fa " + event.icon + " '></i>");
+				            }
+				        },
+				
+				        windowResize: function (event, ui) {
+				            $('#calendar').fullCalendar('render');
+				        }
+				    });
+				
+				    /* hide default buttons */
+				    $('.fc-right, .fc-center').hide();
+	
+				
+					$('#calendar-buttons #btn-prev').click(function () {
+					    $('.fc-prev-button').click();
+					    return false;
+					});
+					
+					$('#calendar-buttons #btn-next').click(function () {
+					    $('.fc-next-button').click();
+					    return false;
+					});
+					
+					$('#calendar-buttons #btn-today').click(function () {
+					    $('.fc-today-button').click();
+					    return false;
+					});
+					
+					$('#mt').click(function () {
+					    $('#calendar').fullCalendar('changeView', 'month');
+					});
+					
+					$('#ag').click(function () {
+					    $('#calendar').fullCalendar('changeView', 'agendaWeek');
+					});
+					
+					$('#td').click(function () {
+					    $('#calendar').fullCalendar('changeView', 'agendaDay');
+					});	
+					
+				 $("#add-event-form").validate({
+				   rules: {
+					 // no quoting necessary
+					 title: "required",
+					 type: "required",
+					 daterange: "required",
+					 text: "required",
+					 color: "required",
+					 web: {
+						required: false,
+						url: true
+					 }
+						
+				   },messages: {
+					 title: "A title for the event is required",
+					 type: "A type for the event is required"
+				   }
+				 });
+			
+			})
+	
+			
+</script>

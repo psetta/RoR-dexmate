@@ -1,0 +1,13 @@
+.ui-dialog {
+	z-index: 1000;
+}
+
+.ui-widget-overlay {
+	z-index:999;
+	opacity: initial;
+	background: rgba(0,0,0,.5);
+}
+
+.fc-event-container * {
+	cursor: pointer !important;
+}

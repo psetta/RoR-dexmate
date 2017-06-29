@@ -1,0 +1,2 @@
+module DologHelper
+end

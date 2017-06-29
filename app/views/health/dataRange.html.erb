@@ -1,0 +1,336 @@
+<div class="content-page">
+	<!-- Start content -->
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card-box">
+						<div id="smil-animations" class="ct-chart ct-golden-section"></div>
+					</div>
+				</div>
+				<!-- end col-->
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card-box p-b-0">
+						<div id="basicwizard" class=" pull-in">
+							<ul>
+								<li><a href="#tab1" data-toggle="tab">Date Range</a></li>
+								<li><a href="#tab2" data-toggle="tab">Delete Date</a></li>
+							</ul>
+							<div class="tab-content m-b-0">
+								<div class="tab-pane m-t-10 fade" id="tab1">
+									<div class="row">
+										<form id="dateRange" class="form-horizontal" method="post" action="/dateRangeHealth" role="form">
+											<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+											<div class="form-group">
+												
+												<div class=" col-sm-offset-1 col-sm-10">
+													<div class="input-daterange input-group" id="date-range">
+														<input type="text" class="form-control" data-mask="99/99/9999" readonly name="start" value="<%= @startDate %>"/>
+														<span class="input-group-addon bg-primary b-0 text-white">to</span>
+														<input type="text" class="form-control" data-mask="99/99/9999"  readonly name="end" value="<%= @endDate %>"/>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-offset-2 col-sm-12">
+												<div class="col-sm-5">
+													<div class="form-group">
+														<div class="checkbox checkbox-primary">
+															<input id="checkbox1" type="checkbox" name="weight" value="1" <% if @weight == 1 %>checked<%end%>>
+															<label for="checkbox1">Weight</label>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<div class="checkbox checkbox-primary">
+															<input id="checkbox2" type="checkbox" name="imc" value="1" <% if @imc == 1 %>checked<%end%>>
+															<label for="checkbox2">IMC</label>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-5">
+													<div class="form-group">
+														<div class="checkbox checkbox-primary">
+															<input id="checkbox3" type="checkbox" name="high" value="1" <% if @high == 1 %>checked<%end%>>
+															<label for="checkbox3">Pressure high</label>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<div class="checkbox checkbox-primary">
+															<input id="checkbox4" type="checkbox" name="low" value="1" <% if @low == 1 %>checked<%end%>>
+															<label for="checkbox4">Pressure low</label>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="text-right col-sm-11">
+													<button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="tab-pane m-t-10 fade" id="tab2">
+									<div class="row">
+										<form class="form-horizontal" method="post" action="/healthDelete" role="form">
+											<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+											<div class="form-group">
+												<label class="col-sm-offset-1 col-sm-11" >Delete Day:</label>
+												<div class="col-sm-offset-1 col-lg-10">
+													<select class="form-control select2" name="date">
+														<optgroup label="Choose the date to remove">
+															<% @healthChart.each do |deleteDate| %>
+															<option value="<%= deleteDate.idmodHealth %>"> <%= deleteDate.date %></option>
+															<% end %>
+														</optgroup>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="text-right col-sm-11">
+													<button type="submit" class="btn btn-danger waves-effect waves-light">Delete</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="card-box">
+						<form id="enterHealthData" class="form-horizontal" method="post" action="/newHealth" role="form">
+							<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+							<div class="form-group">
+								<label class="col-md-2 control-label">Weight</label>
+								<div class="col-md-10">
+									<input type="text" id="weight" data-mask="99?9" name="weight" class="form-control" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Pressure High</label>
+								<div class="col-md-10">
+									<input type="text" id="pressureHigh" data-mask="99?9" class="form-control" name="pressureHigh" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Pressure low</label>
+								<div class="col-md-10">
+									<input type="text" id="pressureLow" data-mask="99?9" name="pressureLow" class="form-control" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Height</label>
+								<div class="col-md-10">
+									<input type="text" id="height" class="form-control" data-mask="9.99" name="height" value="<%= session[:height] %>">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Date</label>
+								<div class="col-md-10">
+									<div class="input-group">
+										<input type="text" class="form-control" data-mask="99/99/9999" readonly placeholder="mm/dd/yyyy" name="date" id="date">
+										<span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+									</div>
+									<!-- input-group -->
+								</div>
+							</div>
+							<div class="form-actions text-right">
+								<div class="row">
+									<div class="col-md-12">
+										<button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- container -->
+	</div>
+	<!-- content -->
+	<footer class="footer">
+		2017 Dexmate.
+	</footer>
+	<script>
+		$(document).ready(function() {
+			$('#basicwizard').bootstrapWizard({'tabClass': 'nav nav-tabs navtab-wizard nav-justified'});
+		          
+		          // Date Picker
+		          jQuery('#datepicker').datepicker();
+		          jQuery('#date').datepicker({
+					  format: "dd/mm/yyyy",
+		              autoclose: true,
+		              todayHighlight: true
+		          });
+		
+		
+					//date Range picker
+		            jQuery('#date-range').datepicker({
+		              format: "dd/mm/yyyy",
+		              toggleActive: true
+		          });
+		
+				var chart = new Chartist.Line('#smil-animations', {
+					labels: [<% @healthChart.each do |xAxis| %>'<%= xAxis.date %>',<% end %>],
+					
+					series: [
+						<% if @weight == 1 %>[<% @healthChart.each do |xAxis| %>'<%= xAxis.weight %>',<% end %>],<% end %>
+						<% if @imc == 1 %>[<% @healthChart.each do |xAxis| %>'<%= xAxis.imc %>',<% end %>],<% end %>
+						<% if @high == 1 %>[<% @healthChart.each do |xAxis| %>'<%= xAxis.pressureHigh %>',<% end %>],<% end %>
+						<% if @low == 1 %>[<% @healthChart.each do |xAxis| %>'<%= xAxis.pressureLow %>',<% end %>],<% end %>
+					]
+				}, {
+				low: 0,
+				plugins: [
+				Chartist.plugins.tooltip(),
+					Chartist.plugins.legend({
+						legendNames: [<% if @weight == 1 %>'Weight',<% end %><% if @imc == 1 %>'IMC',<% end %><% if @high == 1 %>'Pressure High',<% end %><% if @low == 1 %>'Pressure Low',<% end %>],
+						})
+				]
+				});
+
+				
+				var seq = 0,
+				  delays = 40,
+				  durations = 100;
+  
+				chart.on('created', function() {
+				  seq = 0;
+				});
+				
+				
+				chart.on('draw', function(data) {
+					seq++;
+
+				  if(data.type === 'line') {
+					// If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
+					data.element.animate({
+					  opacity: {
+						// The delay when we like to start the animation
+						begin: seq * delays + 1000,
+						// Duration of the animation
+						dur: durations,
+						// The value where the animation should start
+						from: 0,
+						// The value where it should end
+						to: 1
+					  }
+					});
+				  } else if(data.type === 'label' && data.axis === 'x') {
+					data.element.animate({
+					  y: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.y + 100,
+						to: data.y,
+						// We can specify an easing function from Chartist.Svg.Easing
+						easing: 'easeOutQuart'
+					  }
+					});
+				  } else if(data.type === 'label' && data.axis === 'y') {
+					data.element.animate({
+					  x: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 100,
+						to: data.x,
+						easing: 'easeOutQuart'
+					  }
+					});
+				  } else if(data.type === 'point') {
+					data.element.animate({
+					  x1: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 10,
+						to: data.x,
+						easing: 'easeOutQuart'
+					  },
+					  x2: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 10,
+						to: data.x,
+						easing: 'easeOutQuart'
+					  },
+					  opacity: {
+						begin: seq * delays,
+						dur: durations,
+						from: 0,
+						to: 1,
+						easing: 'easeOutQuart'
+					  }
+					});
+				  } else if(data.type === 'grid') {
+					// Using data.axis we get x or y which we can use to construct our animation definition objects
+					var pos1Animation = {
+					  begin: seq * delays,
+					  dur: durations,
+					  from: data[data.axis.units.pos + '1'] - 30,
+					  to: data[data.axis.units.pos + '1'],
+					  easing: 'easeOutQuart'
+					};
+
+					var pos2Animation = {
+					  begin: seq * delays,
+					  dur: durations,
+					  from: data[data.axis.units.pos + '2'] - 100,
+					  to: data[data.axis.units.pos + '2'],
+					  easing: 'easeOutQuart'
+					};
+
+					var animations = {};
+					animations[data.axis.units.pos + '1'] = pos1Animation;
+					animations[data.axis.units.pos + '2'] = pos2Animation;
+					animations['opacity'] = {
+					  begin: seq * delays,
+					  dur: durations,
+					  from: 0,
+					  to: 1,
+					  easing: 'easeOutQuart'
+					};
+
+					data.element.animate(animations);
+				  }
+				});
+				
+				$("#dateRange").validate({
+					   rules: {
+						 
+						 start: "required",
+						 end: "required"
+		
+					   },messages: {
+						start: "",
+						 end: ""
+					   }
+					 });
+				
+				$("#enterHealthData").validate({
+				   rules: {
+					 
+					 weight: "required",
+					 pressureHigh: "required",
+					 pressureLow: "required",
+					 height: "required",
+					 date: "required"
+		
+				   },messages: {
+					start: "",
+					 end: ""
+				   }
+				 });
+						 
+		      })
+		  
+	</script>
+</div>
